@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "FindIt - AI Campus Lost & Found"
+description = "A mobile-first campus lost-and-found prototype with searchable items, simulated AI matching, secure claim verification, notifications, and a student leaderboard."
+version = "1.0.0"
+id = "artifacts/findit-campus"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25657
+
+[services.development]
+run = "pnpm --filter @workspace/findit-campus run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/findit-campus", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/findit-campus/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25657"
+BASE_PATH = "/"
