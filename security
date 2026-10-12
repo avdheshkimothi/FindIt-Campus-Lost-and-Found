@@ -1,0 +1,31 @@
+
+export default async (request) => {
+  if (request.method !== "POST") {
+    return new Response("Method not allowed", {
+      status: 405
+    });
+  }
+
+  try {
+    const { code } = await request.json();
+    const secret = process.env.INVITE_CODE;
+
+    if (
+      typeof code !== "string" ||
+      !secret ||
+      code !== secret
+    ) {
+      return Response.json(
+        { success: false, message: "Invalid invitation code" },
+        { status: 401 }
+      );
+    }
+
+    return Response.json({ success: true });
+  } catch {
+    return Response.json(
+      { success: false, message: "Invalid request" },
+      { status: 400 }
+    );
+  }
+};
